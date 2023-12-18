@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"embed"
@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"../../common"
 	"../../controller"
 	"../../middleware"
@@ -21,7 +22,7 @@ var buildFS embed.FS
 //go:embed web/build/index.html
 var indexPage []byte
 
-func main() {
+func Handler(w http.ResponseWriter, r *http.Request) {
 	common.SetupLogger()
 	common.SysLog("One API " + common.Version + " started")
 	if os.Getenv("GIN_MODE") != "debug" {
@@ -104,4 +105,10 @@ func main() {
 	if err != nil {
 		common.FatalLog("failed to start HTTP server: " + err.Error())
 	}
+
+	// The following lines are added to adapt to http.HandlerFunc
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		server.ServeHTTP(w, r)
+	})
+	http.ListenAndServe(":"+port, nil)
 }
