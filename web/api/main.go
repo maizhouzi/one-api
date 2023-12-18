@@ -21,7 +21,7 @@ var buildFS embed.FS
 //go:embed web/build/index.html
 var indexPage []byte
 
-func Main() {
+func main() {
 	common.SetupLogger()
 	common.SysLog("One API " + common.Version + " started")
 	if os.Getenv("GIN_MODE") != "debug" {
