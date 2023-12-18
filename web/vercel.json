@@ -4,4 +4,4 @@
         "GO_BUILD_FLAGS": "-ldflags '-s -w' -o one-api"
       }
     }
-  }
+}
